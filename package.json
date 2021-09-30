@@ -1,0 +1,24 @@
+{
+  "name": "bits-of-good-pokemon-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "fetch.js",
+  "type": "module",
+  "dependencies": {
+    "node-fetch": "^3.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ygupta17/Bits-of-Good-Pokemon-Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ygupta17/Bits-of-Good-Pokemon-Project/issues"
+  },
+  "homepage": "https://github.com/ygupta17/Bits-of-Good-Pokemon-Project#readme"
+}
