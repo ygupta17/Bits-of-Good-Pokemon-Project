@@ -1,7 +1,7 @@
 const searchBar = document.getElementById("searchbar");
 console.log(searchBar);
 // Example call to the Pokedex API
-/**fetch('https://pokeapi.co/api/v2/pokemon/ditto')
+	fetch('https://pokeapi.co/api/v2/pokemon/ditto')
 	.then(response => {
 		return response.json()
 	})
@@ -10,4 +10,4 @@ console.log(searchBar);
 	})
 	.catch(error => {
 		console.error(error)
-	})*/
+	})

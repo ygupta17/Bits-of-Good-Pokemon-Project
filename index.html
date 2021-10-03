@@ -2,17 +2,97 @@
 <html>
 <body>
 <head>
+    <meta charset = "UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
-<form id="searchbar"> 
-    <input type="search" id="query" name="q" placeholder="Search for Pokemon">
-</form>
+<input type="text" id="search" name="q" placeholder="Search for Pokemon" onkeyup="enterkey()">
 
+<p id = "demo"></p>
+<button id="click">Search</button>
 <button id="info">Info</button>
 <button id="moves">Moves</button>
 <button id="locations">Locations</button>
 <button id="evolutions">Evolutions</button>
 
+<script type = "text/javascript">
+
+    const baseURL = "https://pokeapi.co/api/v2/"
+    
+    function enterkey() {
+        if (window.event.keyCode == 13) {
+            $.ajax({
+                    type: 'GET',
+                    url: "https://pokeapi.co/api/v2/pokemon",
+                    data: {},
+
+                    success: function(response) {
+                            for (i = 0; i < response['results'].length; i++) {
+                            //let name = response['results'][i]['name']
+                            //let input = document.getElementById('search').value.toLowerCase();
+                            //$("#demo").append(name + "<br>");
+                            //$("#demo").append(input + "<br>");
+
+                            let input = document.getElementById('search').value.toLowerCase();
+
+                            if (input == response['results'][i]['name']) {
+                                matchName = input;
+                                $("#demo").append(matchName + "<br>");
+                                index = i + 1;
+                                $("#demo").append(index + "<br>");
+                            }
+                        }
+                    },
+                    error: function() {
+                        //alert(str);
+                        alert('error');
+                    }
+
+                });
+        }
+    }
+
+    $(function showInfo() {
+        $("#info").click(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: "https://pokeapi.co/api/v2/pokemon/bulbasaur",
+                    data: {},
+                    
+                    success: function(response) {
+                        //let set = JSON.stringify(json);
+                        //alert(str);
+
+                    let weight = response['weight']
+                    let height = response['height']
+                    let hp = response['stats'][0]['base_stat']
+                    let atk = response['stats'][1]['base_stat']
+                    let def = response['stats'][2]['base_stat']
+                    let sp_atk = response['stats'][3]['base_stat']
+                    let sp_def = response['stats'][4]['base_stat']
+                    let speed = response['stats'][5]['base_stat']
+                    
+                    $("#demo").append("weight: " + weight + "<br>");
+                    $("#demo").append("height: " + height + "<br>");
+                    $("#demo").append("hp: " + hp + "<br>");
+                    $("#demo").append("atk: " + atk + "<br>");
+                    $("#demo").append("def: " + def + "<br>");
+                    $("#demo").append("sp.atk: " + sp_atk + "<br>");
+                    $("#demo").append("sp.def: " + sp_def + "<br>");
+                    $("#demo").append("speed: " + speed + "<br>");
+                
+                    },
+                    error: function() {
+                        //alert(str);
+                        alert('error');
+                    }
+
+                });
+        });
+    });
+
+    
+</script>
 </body>
 </html>
