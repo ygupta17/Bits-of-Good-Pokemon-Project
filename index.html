@@ -58,6 +58,7 @@
                 $.ajax({
                     type: 'GET',
                     url: "https://pokeapi.co/api/v2/pokemon/bulbasaur",
+                    //url: "${baseURL}pokemon/bulbasaur", 
                     data: {},
                     
                     success: function(response) {
@@ -91,6 +92,58 @@
                 });
         });
     });
+
+
+    function getInfo(name) {
+        fetch("${baseURL}pokemon/${name}")
+            .then((res) => {
+                return res.json()
+            })
+            .then(data => {
+                console.log(data);
+                if (data == null) {
+                    $("#demo").append("Illegal input");
+
+                    //console.log("Pokemon does not exist")
+                } else {
+                    let height = data.height;
+                    let weight = data.weight;
+                    let hp = data['stats'][0]['base_stat'];
+                    let attack = data['stats'][1]['base_stat'];
+                    let defense = data['stats'][2]['base_stat'];
+                    let specialAttack = data['stats'][3]['base_stat'];
+                    let specialDefense = data['stats'][4]['base_stat'];
+                    let speed = data['stats'][5]['base_stat'];
+
+                    $("#demo").append("weight: " + weight + "<br>");
+                    $("#demo").append("height: " + height + "<br>");
+                    $("#demo").append("hp: " + hp + "<br>");
+                    $("#demo").append("atk: " + attack + "<br>");
+                    $("#demo").append("def: " + defense + "<br>");
+                    $("#demo").append("sp.atk: " + specialAttack + "<br>");
+                    $("#demo").append("sp.def: " + specialDefense + "<br>");
+                    $("#demo").append("speed: " + speed + "<br>");
+
+                }
+            })
+    }
+
+    function getMoves(name) {
+        fetch("${baseURL}/move/{name}")
+            .then((res) => {
+                return res.json()
+            })
+            .then(data => {
+                if (data == null) {
+                    $("#demo").append("Illegal input");
+                } else {
+                    
+
+                }
+            })
+
+    }
+
 
     
 </script>
