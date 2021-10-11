@@ -7,103 +7,110 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<input type="text" id="search" name="q" placeholder="Search for Pokemon" onkeyup="enterkey()">
+<input type="text" id="search" name="q" placeholder="Search for Pokemon" >
 
-<p id = "demo"></p>
+<div id = "demo"></div>
+<div id = "demo2"></div>
+
+
+<img id="image-container" src="https://fontmeme.com/images/Pokemon-Logo.jpg" width="200" height="300">
+
+<div id="info-container"></div>
 <button id="click">Search</button>
+
 <button id="info">Info</button>
 <button id="moves">Moves</button>
 <button id="locations">Locations</button>
 <button id="evolutions">Evolutions</button>
+<button id="left arrow"><</button>
+<button id="left arrow">></button>
 
 <script type = "text/javascript">
 
-    const baseURL = "https://pokeapi.co/api/v2/"
+const baseURL = "https://pokeapi.co/api/v2/"
+
+//const searchBtn = document.getElementById("search")
     
-    function enterkey() {
-        if (window.event.keyCode == 13) {
-            $.ajax({
-                    type: 'GET',
-                    url: "https://pokeapi.co/api/v2/pokemon",
-                    data: {},
+function getSearch() {
+    
+        fetch(`${baseURL}pokemon?offset=0&limit=151`)
+            .then((res) => {
+                return res.json()
+            })
+            .then(data => {
+                console.log(data);
+                let input = document.getElementById('search').value.toLowerCase();
+                for (i = 0; i < data['results'].length; i++) {
+                    if (input == data['results'][i]['name']) {
+                        matchName = input;
+                        //index = i + 1;
+                        //document.getElementById("demo").innerText = matchName;
+                        //imageurl = data['sprites'][4];
+                        //document.getElementById("picture").src = '${baseURL}pokemon/matchName';
+                        break;
+                        } else {
+                            //document.getElementById("demo").innerText = "invalid input";
+                            let info = document.getElementById("info-container")
+                            info.innerHTML = "Does not exist";
 
-                    success: function(response) {
-                            for (i = 0; i < response['results'].length; i++) {
-                            //let name = response['results'][i]['name']
-                            //let input = document.getElementById('search').value.toLowerCase();
-                            //$("#demo").append(name + "<br>");
-                            //$("#demo").append(input + "<br>");
-
-                            let input = document.getElementById('search').value.toLowerCase();
-
-                            if (input == response['results'][i]['name']) {
-                                matchName = input;
-                                $("#demo").append(matchName + "<br>");
-                                index = i + 1;
-                                $("#demo").append(index + "<br>");
-                            }
+                            document.getElementById("image-container").src="https://53ez82p1xgbdzuy8ma1qotwh-wpengine.netdna-ssl.com/wp-content/uploads/2015/02/Error.jpg";
                         }
-                    },
-                    error: function() {
-                        //alert(str);
-                        alert('error');
-                    } 
+                }    
+            })
+    
+}
 
-                });
-        }
-    }
-
-    $(function showInfo() {
-        $("#info").click(function () {
-                $.ajax({
-                    type: 'GET',
-                    url: "https://pokeapi.co/api/v2/pokemon/bulbasaur",
-                    //url: "${baseURL}pokemon/bulbasaur", 
-                    data: {},
-                    
-                    success: function(response) {
-                        //let set = JSON.stringify(json);
-                        //alert(str);
-
-                    let weight = response['weight']
-                    let height = response['height']
-                    let hp = response['stats'][0]['base_stat']
-                    let atk = response['stats'][1]['base_stat']
-                    let def = response['stats'][2]['base_stat']
-                    let sp_atk = response['stats'][3]['base_stat']
-                    let sp_def = response['stats'][4]['base_stat']
-                    let speed = response['stats'][5]['base_stat']
-                    
-                    $("#demo").append("weight: " + weight + "<br>");
-                    $("#demo").append("height: " + height + "<br>");
-                    $("#demo").append("hp: " + hp + "<br>");
-                    $("#demo").append("atk: " + atk + "<br>");
-                    $("#demo").append("def: " + def + "<br>");
-                    $("#demo").append("sp.atk: " + sp_atk + "<br>");
-                    $("#demo").append("sp.def: " + sp_def + "<br>");
-                    $("#demo").append("speed: " + speed + "<br>");
-                
-                    },
-                    error: function() {
-                        //alert(str);
-                        alert('error');
-                    }
-
-                });
-        });
-    });
-
-
-    function getInfo(name) {
-        fetch("${baseURL}pokemon/${name}")
+function showImg(name) {
+    let info = document.getElementById("image-container")
+        //console.log(name)
+        
+        fetch(`${baseURL}pokemon/${name}`)
             .then((res) => {
                 return res.json()
             })
             .then(data => {
                 console.log(data);
                 if (data == null) {
-                    $("#demo").append("Illegal input");
+                    info.innerText = "Illegal input";
+                } else {
+                    let imgURL = data['sprites']['front_default'];
+                    document.getElementById("image-container").src=imgURL;
+                }
+            })
 
+}
+
+document.getElementById("search").addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode === 13) {
+        getSearch();
+
+        const searchValue = document.getElementById("search").value
+        getInfo(searchValue);
+        showImg(searchValue);
+    }
+});
+
+    const infoBtn = document.getElementById("info")
+    infoBtn.addEventListener("click", (e) => {
+        // e.preventDefault();
+        const searchValue = document.getElementById("search").value
+        // console.log(searchValue)
+        getInfo(searchValue);
+    })
+    function getInfo(name) {
+        let info = document.getElementById("info-container")
+        console.log(name)
+        //$("#info").click(function () {
+            fetch(`${baseURL}pokemon/${name}`)
+            .then((res) => {
+                return res.json()
+            })
+            .then(data => {
+                console.log(data);
+                if (data == null) {
+                    info.innerText = "Illegal input";
+ 
                     //console.log("Pokemon does not exist")
                 } else {
                     let height = data.height;
@@ -115,20 +122,19 @@
                     let specialDefense = data['stats'][4]['base_stat'];
                     let speed = data['stats'][5]['base_stat'];
 
-                    $("#demo").append("weight: " + weight + "<br>");
-                    $("#demo").append("height: " + height + "<br>");
-                    $("#demo").append("hp: " + hp + "<br>");
-                    $("#demo").append("atk: " + attack + "<br>");
-                    $("#demo").append("def: " + defense + "<br>");
-                    $("#demo").append("sp.atk: " + specialAttack + "<br>");
-                    $("#demo").append("sp.def: " + specialDefense + "<br>");
-                    $("#demo").append("speed: " + speed + "<br>");
-
+                    info.innerHTML = "height: " + height + "<br>" + "weight: " + weight + "<br>" +
+                                    + "hp: " + hp + "<br>" + "atk: " + attack + "<br>" + "def: " + defense
+                                    + "<br>" + "sp.atk: " + specialAttack + "<br>" + "sp.def: " + specialDefense
+                                    + "<br>" + "speed: " + speed;
+                    
                 }
             })
-    }
+
+        }
+    
 
     function getMoves(name) {
+        $("#moves").click(function () {
         fetch("${baseURL}/move/{name}")
             .then((res) => {
                 return res.json()
@@ -137,12 +143,22 @@
                 if (data == null) {
                     $("#demo").append("Illegal input");
                 } else {
-                    
+
+
+
 
                 }
             })
-
+        })
     }
+
+    function getLocation(name) {
+        $("#moves").click(function () {
+        fetch("${baseURL}/pokemon/{name}/encounters")
+        })
+    }
+
+
 
 
     
