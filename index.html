@@ -161,15 +161,13 @@
                     document.getElementById("demo").innerHTML = document.getElementById("demo").innerHTML + "CANNOT BE CAUGHT IN WILD";
                 } else {
                     function myFunction(index, data) {
-                        document.getElementById("demo").innerHTML = document.getElementById("demo").innerHTML + "CANNOT BE CAUGHT IN WILD";
+                        document.getElementById("demo").innerHTML = document.getElementById("demo").innerHTML + "pokemon can be found in " + data.location_area;
                     }
                     data.forEach(myFunction)
 
                     
                 }
             })
-            
-
     }
 
 
