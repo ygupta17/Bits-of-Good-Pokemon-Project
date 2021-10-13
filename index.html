@@ -137,10 +137,38 @@
                 if (data == null) {
                     $("#demo").append("Illegal input");
                 } else {
-                    
+
 
                 }
             })
+
+    }
+
+    const pokemonName = document.getElementById('search').value
+    document.getElementById('locations').addEventListener ("click", e => {
+        getLocation(pokemonName);
+    })
+
+    function getLocation(name) {
+        console.log(name)
+        fetch(`${baseURL}/pokemon/${name}/encounters`)
+            .then((res) => {
+                return res.json()
+            })
+            .then(data => {
+                console.log(data);
+                if (data == null) {
+                    document.getElementById("demo").innerHTML = document.getElementById("demo").innerHTML + "CANNOT BE CAUGHT IN WILD";
+                } else {
+                    function myFunction(index, data) {
+                        document.getElementById("demo").innerHTML = document.getElementById("demo").innerHTML + "CANNOT BE CAUGHT IN WILD";
+                    }
+                    data.forEach(myFunction)
+
+                    
+                }
+            })
+            
 
     }
 
