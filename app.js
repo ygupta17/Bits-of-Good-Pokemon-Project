@@ -170,7 +170,7 @@ locationBtn.addEventListener("click", (e) => {
 })
 
 function getLocation(name) {
-    //let location = document.getElementById("info-container")
+    let location = document.getElementById("info-container")
     console.log(name)
         fetch(`${baseURL}pokemon/${name}/encounters`)
             .then((res) => {
